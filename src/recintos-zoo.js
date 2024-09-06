@@ -64,34 +64,23 @@ function verificaAnimal(especieAnimal) {
 }
 
 function verificaRecinto(animal) {
-    let possiveisRecintos = [];
-    let possiveisRecintos2 = [];
-    let isCarnivoro = verificaCarnivoro(animal);
-    if (isCarnivoro) {
-        for (let recinto of recintos) {
-            if (recinto._animaisExistentes == "vazio" || recinto._animaisExistentes.includes(animal)) {
-                possiveisRecintos.push(recinto);
-            }
+    const isCarnivoro = verificaCarnivoro(animal);
+    const recintosViaveis = recintos.filter(recinto => {
+        const animaisExistentes = recinto._animaisExistentes;
+        let podeAcomodar;
+
+        if (isCarnivoro) {
+            podeAcomodar = animaisExistentes === "vazio" || animaisExistentes.includes(animal);
+        } else {
+            podeAcomodar = !["leao", "leopardo", "crocodilo"].some(especie => animaisExistentes.includes(especie))
         }
-    } else {
-        for (let recinto of recintos) {
-            if (!recinto._animaisExistentes.includes("leao") && 
-            !recinto._animaisExistentes.includes("leopardo") && 
-            !recinto._animaisExistentes.includes("crocodilo")) {
-                possiveisRecintos.push(recinto);
-            }
-        }
-    }
-    
-    for (let recinto of possiveisRecintos) {
-        if (verificaBioma(animal, recinto._bioma)) {
-            possiveisRecintos2.push(recinto);
-        }
-    }
-    if (possiveisRecintos2.length > 0) {
-        return possiveisRecintos2;
-    }
-    return false;
+
+        const temBiomaAdequado = verificaBioma(animal, recinto._bioma);
+
+        return podeAcomodar && temBiomaAdequado;
+    });
+
+    return recintosViaveis.length > 0 ? recintosViaveis : false;
 }
 
 function verificaBioma(especieAnimal, bioma) {
@@ -136,4 +125,6 @@ const recinto5 = new Recinto(5, 'savana', 9, '1 leao');
 const recintos = [recinto1, recinto2, recinto3, recinto4, recinto5];
 
 const recintosZoo = new RecintosZoo();
+
+console.log(recintosZoo.analisaRecintos("CROCODILO", 1));
 export { RecintosZoo as RecintosZoo };
