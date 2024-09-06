@@ -9,17 +9,18 @@ class RecintosZoo {
             }
         }
         animal = animal.toLowerCase();
-        let recintos = [];
-        let recintosQtd = [];
-        let tamanhoTotal = verificaTamanho(animal, quantidade) * quantidade;
-        
         if (!verificaAnimal(animal)) {
             return {
                 erro: "Animal inválido"
             }
         }
+
+        let recintos = [];
+        let recintosQtd = [];
+        let tamanhoTotal = verificaTamanho(animal, quantidade) * quantidade;
+        
         recintos = verificaRecinto(animal);
-        recintosQtd = verificaQuantidade(animal, recintos, quantidade);
+        recintosQtd = verificaQuantidade(recintos, tamanhoTotal);
         
         atualizaEspacoLivre(recintosQtd, animal);
         let resposta = formataString(recintosQtd, tamanhoTotal);
@@ -109,13 +110,6 @@ function verificaBioma(especieAnimal, bioma) {
 }
 
 function verificaCarnivoro(especieAnimal) {
-    // for (let animal of animais) {
-    //     if (animal._especie == especieAnimal) {
-    //         if (animal.isCarnivoro()) return true;
-    //     }
-    // }
-    // return false;
-
     return animais.some(animal => 
         animal._especie === especieAnimal && animal.isCarnivoro()
     );
@@ -127,13 +121,8 @@ function verificaTamanho(especieAnimal) {
     }
 }
 
-function verificaQuantidade(animal, recintos, tamanhoTotal) {
-    let recintosValidos = [];
-    let quantidadeAnimal = verificaTamanho(animal) * tamanhoTotal;
-    for (let recinto of recintos) {
-        if (recinto._tamanho >= quantidadeAnimal) recintosValidos.push(recinto);
-    }
-    return recintosValidos;
+function verificaQuantidade(recintos, tamanhoTotal) {
+    return recintos.filter(recinto => recinto._tamanho >= tamanhoTotal);
 }
 
 

@@ -1,5 +1,3 @@
-if (!recintos) {
-            return {
-                erro: "Não há recinto viável"
-            }
-        }
+_especie === especieAnimal);
+    // console.log(animal)
+    // return animal ? animal._tamanho : 0;
