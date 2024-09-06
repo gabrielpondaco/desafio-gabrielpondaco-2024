@@ -39,13 +39,9 @@ class RecintosZoo {
 }
 
 function formataString(recintosQtd, tamanhoTotal) {
-    let resposta = [];
-    for (let recinto of recintosQtd) {
-        if (recinto._espacoLivre - tamanhoTotal >= 0) {
-            resposta.push(`Recinto ${recinto._numero} (espaço livre: ${recinto._espacoLivre - tamanhoTotal} total: ${recinto._tamanho})`)
-        }
-    }
-    return resposta;
+    return recintosQtd
+            .filter(recinto => recinto._espacoLivre - tamanhoTotal >= 0)
+            .map(recinto => `Recinto ${recinto._numero} (espaço livre: ${recinto._espacoLivre - tamanhoTotal} total: ${recinto._tamanho})`)
 }
 
 function atualizaEspacoLivre(recintosQtd, animal) {
@@ -140,6 +136,4 @@ const recinto5 = new Recinto(5, 'savana', 9, '1 leao');
 const recintos = [recinto1, recinto2, recinto3, recinto4, recinto5];
 
 const recintosZoo = new RecintosZoo();
-console.log(recintosZoo.analisaRecintos("MACACO", 10));
-
 export { RecintosZoo as RecintosZoo };
