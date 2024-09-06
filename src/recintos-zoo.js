@@ -65,10 +65,7 @@ function atualizaEspacoLivre(recintosQtd, animal) {
 }
 
 function verificaAnimal(especieAnimal) {
-    for (let animal of animais) {
-        if (animal._especie == especieAnimal.toLowerCase()) return true
-    }
-    return false;
+    return animais.some(animal => animal._especie === especieAnimal.toLowerCase());
 }
 
 function verificaRecinto(animal) {
