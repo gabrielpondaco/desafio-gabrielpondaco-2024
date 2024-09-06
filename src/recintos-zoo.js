@@ -101,14 +101,12 @@ function verificaRecinto(animal) {
 }
 
 function verificaBioma(especieAnimal, bioma) {
-        for (let animal of animais) {
-            const biomaAnimal = animal._bioma.split(/\s+/);
-            const biomaRecinto = bioma.split(/\s+/);
-            const contemBioma = biomaRecinto.some(bio => biomaAnimal.includes(bio))
-            if (contemBioma && animal._especie.includes(especieAnimal)) return true;
-        }
-        return false;
-    
+    return animais.some(animal => {
+        const biomaAnimal = animal._bioma.split(/\s+/);
+        const biomaRecinto = bioma.split(/\s+/);
+        const contemBioma = biomaRecinto.some(bio => biomaAnimal.includes(bio));
+        return contemBioma && animal._especie === especieAnimal;
+    });
 }
 
 function verificaCarnivoro(especieAnimal) {
