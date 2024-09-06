@@ -49,20 +49,18 @@ function formataString(recintosQtd, tamanhoTotal) {
 }
 
 function atualizaEspacoLivre(recintosQtd, animal) {
-    for (let recinto of recintosQtd) {
-        if (!recinto._animaisExistentes.includes("vazio")) {
-            let animaisExistentes = recinto._animaisExistentes.split(/\s+/);
-            recinto._espacoLivre = recinto._tamanho - verificaTamanho(animaisExistentes[1]) * animaisExistentes[0];
+    recintosQtd.forEach(recinto => {
+        if (recinto._animaisExistentes.includes("vazio")) {
+            recinto._espacoLivre = recinto._tamanho;
+        } else {
+            const animaisExistentes = recinto._animaisExistentes.split(/\s+/);
+            const tamanhoAnimalExistente = verificaTamanho(animaisExistentes[1]) * animaisExistentes[0];
+            recinto._espacoLivre = recinto._tamanho - tamanhoAnimalExistente;
             if (!animaisExistentes[1].includes(animal)) {
                 recinto._espacoLivre -= 1;
             }
-            
         }
-        else {
-            recinto._espacoLivre = recinto._tamanho;
-        }
-    }
-    return recintosQtd;
+    })
 }
 
 function verificaAnimal(especieAnimal) {
