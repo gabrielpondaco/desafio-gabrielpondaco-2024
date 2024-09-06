@@ -97,7 +97,6 @@ function verificaRecinto(animal) {
         return possiveisRecintos2;
     }
     return false;
-    
 }
 
 function verificaBioma(especieAnimal, bioma) {
@@ -110,12 +109,16 @@ function verificaBioma(especieAnimal, bioma) {
 }
 
 function verificaCarnivoro(especieAnimal) {
-    for (let animal of animais) {
-        if (animal._especie == especieAnimal) {
-            if (animal.isCarnivoro()) return true;
-        }
-    }
-    return false;
+    // for (let animal of animais) {
+    //     if (animal._especie == especieAnimal) {
+    //         if (animal.isCarnivoro()) return true;
+    //     }
+    // }
+    // return false;
+
+    return animais.some(animal => 
+        animal._especie === especieAnimal && animal.isCarnivoro()
+    );
 }
 
 function verificaTamanho(especieAnimal) {
