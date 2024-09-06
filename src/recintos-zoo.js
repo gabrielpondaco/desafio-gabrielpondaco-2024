@@ -3,30 +3,36 @@ import Recinto from "./recinto.js"
 class RecintosZoo {
 
     analisaRecintos(animal, quantidade) {
+        if (quantidade <= 0) {
+            return {
+                erro: "Quantidade inválida"
+            }
+        }
+        animal = animal.toLowerCase();
         let recintos = [];
         let recintosQtd = [];
-        let tamanhoTotal = verificaTamanho(animal, quantidade);
+        let tamanhoTotal = verificaTamanho(animal, quantidade) * quantidade;
+        
         if (!verificaAnimal(animal)) {
             return {
                 erro: "Animal inválido"
             }
         }
         recintos = verificaRecinto(animal);
-        if (!recintos) {
-            return {
-                erro: "Não há recinto viável"
-            }
-        }
         recintosQtd = verificaQuantidade(animal, recintos, quantidade);
-        if (recintosQtd.length == 0) {
+        
+        atualizaEspacoLivre(recintosQtd, animal);
+        let resposta = formataString(recintosQtd, tamanhoTotal);
+        if (resposta.length > 0) {
             return {
-                erro: "Quantidade Inválida"
+                recintosViaveis: resposta
             }
         }
 
         return {
-            recintosViaveis: formataString(recintosQtd, tamanhoTotal)
+            erro: "Não há recinto viável"
         }
+        
     }
 
 }
@@ -34,9 +40,28 @@ class RecintosZoo {
 function formataString(recintosQtd, tamanhoTotal) {
     let resposta = [];
     for (let recinto of recintosQtd) {
-        resposta.push(`Recinto ${recinto._numero} (espaço livre: ${recinto._tamanho - tamanhoTotal} total: ${recinto._tamanho})`)
+        if (recinto._espacoLivre - tamanhoTotal >= 0) {
+            resposta.push(`Recinto ${recinto._numero} (espaço livre: ${recinto._espacoLivre - tamanhoTotal} total: ${recinto._tamanho})`)
+        }
     }
     return resposta;
+}
+
+function atualizaEspacoLivre(recintosQtd, animal) {
+    for (let recinto of recintosQtd) {
+        if (!recinto._animaisExistentes.includes("vazio")) {
+            let animaisExistentes = recinto._animaisExistentes.split(/\s+/);
+            recinto._espacoLivre = recinto._tamanho - verificaTamanho(animaisExistentes[1]) * animaisExistentes[0];
+            if (!animaisExistentes[1].includes(animal)) {
+                recinto._espacoLivre -= 1;
+            }
+            
+        }
+        else {
+            recinto._espacoLivre = recinto._tamanho;
+        }
+    }
+    return recintosQtd;
 }
 
 function verificaAnimal(especieAnimal) {
@@ -65,14 +90,12 @@ function verificaRecinto(animal) {
             }
         }
     }
-    console.log(possiveisRecintos);
     
     for (let recinto of possiveisRecintos) {
         if (verificaBioma(animal, recinto._bioma)) {
             possiveisRecintos2.push(recinto);
         }
     }
-    console.log(possiveisRecintos2);
     if (possiveisRecintos2.length > 0) {
         return possiveisRecintos2;
     }
@@ -102,7 +125,7 @@ function verificaCarnivoro(especieAnimal) {
 
 function verificaTamanho(especieAnimal) {
     for (let animal of animais) {
-        if (animal._especie == especieAnimal) return animal._tamanho;
+        if (especieAnimal.includes(animal._especie)) return animal._tamanho;
     }
 }
 
@@ -132,6 +155,6 @@ const recinto5 = new Recinto(5, 'savana', 9, '1 leao');
 const recintos = [recinto1, recinto2, recinto3, recinto4, recinto5];
 
 const recintosZoo = new RecintosZoo();
-console.log(recintosZoo.analisaRecintos("macaco", 1));
+console.log(recintosZoo.analisaRecintos("MACACO", 10));
 
 export { RecintosZoo as RecintosZoo };

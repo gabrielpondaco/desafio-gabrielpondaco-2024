@@ -1,4 +1,5 @@
-return animais.some(animal => (
-    //     animal._bioma === bioma && 
-    //     animal._especie === especieAnimal
-    // ));
+if (!recintos) {
+            return {
+                erro: "Não há recinto viável"
+            }
+        }
