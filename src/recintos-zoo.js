@@ -100,7 +100,7 @@ function verificaTamanho(especieAnimal) {
 }
 
 function verificaQuantidade(recintos, tamanhoTotal) {
-    return recintos.filter(recinto => recinto._tamanho >= tamanhoTotal);
+    return recintos.length > 0 ? recintos.filter(recinto => recinto._tamanho >= tamanhoTotal): [];
 }
 
 
