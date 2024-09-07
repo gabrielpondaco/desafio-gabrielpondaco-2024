@@ -3,7 +3,7 @@ import Recinto from "./recinto.js"
 class RecintosZoo {
 
     analisaRecintos(animal, quantidade) {
-        if (quantidade <= 0) {
+        if (quantidade <= 0 || !quantidade) {
             return {
                 erro: "Quantidade inválida"
             }
