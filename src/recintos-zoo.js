@@ -60,7 +60,9 @@ function verificaRecinto(animal) {
         const animaisExistentes = recinto._animaisExistentes;
         let podeAcomodar;
 
-        if (isCarnivoro) {
+        if (animal.includes("hipopotamo")) {
+            podeAcomodar = recinto._bioma.includes('savana e rio') || animaisExistentes === "vazio";
+        } else if (isCarnivoro) {
             podeAcomodar = animaisExistentes === "vazio" || animaisExistentes.includes(animal);
         } else {
             podeAcomodar = !["leao", "leopardo", "crocodilo"].some(especie => animaisExistentes.includes(especie))
