@@ -14,25 +14,16 @@ class RecintosZoo {
                 erro: "Animal inválido"
             }
         }
-
-        let recintos = [];
-        let recintosQtd = [];
-        let tamanhoTotal = verificaTamanho(animal, quantidade) * quantidade;
         
-        recintos = verificaRecinto(animal);
-        recintosQtd = verificaQuantidade(recintos, tamanhoTotal);
-        
+        const tamanhoTotal = verificaTamanho(animal, quantidade) * quantidade;
+        const recintosViaveis = verificaRecinto(animal);
+        const recintosQtd = verificaQuantidade(recintosViaveis, tamanhoTotal);
         atualizaEspacoLivre(recintosQtd, animal);
-        let resposta = formataString(recintosQtd, tamanhoTotal);
-        if (resposta.length > 0) {
-            return {
-                recintosViaveis: resposta
-            }
-        }
-
-        return {
-            erro: "Não há recinto viável"
-        }
+        
+        const resposta = formataString(recintosQtd, tamanhoTotal);
+        return resposta.length > 0 
+        ? { recintosViaveis: resposta }
+        : { erro: "Não há recinto viável" }
         
     }
 
@@ -126,5 +117,4 @@ const recintos = [recinto1, recinto2, recinto3, recinto4, recinto5];
 
 const recintosZoo = new RecintosZoo();
 
-console.log(recintosZoo.analisaRecintos("CROCODILO", 1));
 export { RecintosZoo as RecintosZoo };
