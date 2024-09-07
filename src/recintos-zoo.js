@@ -16,7 +16,7 @@ class RecintosZoo {
         }
         
         const tamanhoTotal = verificaTamanho(animal, quantidade) * quantidade;
-        const recintosViaveis = verificaRecinto(animal);
+        const recintosViaveis = verificaRecinto(animal, quantidade);
         const recintosQtd = verificaQuantidade(recintosViaveis, tamanhoTotal);
         atualizaEspacoLivre(recintosQtd, animal);
         
@@ -54,18 +54,20 @@ function verificaAnimal(especieAnimal) {
     return animais.some(animal => animal._especie === especieAnimal.toLowerCase());
 }
 
-function verificaRecinto(animal) {
+function verificaRecinto(animal, quantidade) {
     const isCarnivoro = verificaCarnivoro(animal);
     const recintosViaveis = recintos.filter(recinto => {
         const animaisExistentes = recinto._animaisExistentes;
         let podeAcomodar;
-
-        if (animal.includes("hipopotamo")) {
+        if (animal === "macaco" && quantidade === 1) {
+            podeAcomodar = animaisExistentes !== "vazio" &&
+                            !["leao", "leopardo", "crocodilo"].some(especie => animaisExistentes.includes(especie));
+        } else if (animal.includes("hipopotamo")) {
             podeAcomodar = recinto._bioma.includes('savana e rio') || animaisExistentes === "vazio";
         } else if (isCarnivoro) {
             podeAcomodar = animaisExistentes === "vazio" || animaisExistentes.includes(animal);
         } else {
-            podeAcomodar = !["leao", "leopardo", "crocodilo"].some(especie => animaisExistentes.includes(especie))
+            podeAcomodar = !["leao", "leopardo", "crocodilo"].some(especie => animaisExistentes.includes(especie));
         }
 
         const temBiomaAdequado = verificaBioma(animal, recinto._bioma);
